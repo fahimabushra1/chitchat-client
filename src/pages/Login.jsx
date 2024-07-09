@@ -1,11 +1,30 @@
-import { IoIosCloseCircleOutline } from "react-icons/io";
-import { FaCalendarAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import DatePicker from "react-datepicker";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import 'react-datepicker/dist/react-datepicker.css'
-import { useState } from "react";
+import SignUp from "../components/SignUp";
+import useAuth from "../hooks/UseAuth";
+import { useEffect } from "react";
 const Login = () => {
-    const [selectedDate, setSelectedDate]= useState(null);
+  const {signIn, user} = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  console.log(user?.email)
+const from = location?.state?.from?.pathname || '/home'
+  const handleSubmit= (e)=>{
+    e.preventDefault();
+
+    const form = e.target;
+ const email = form.email.value;
+ const password = form.password.value;
+ console.log(email, password);
+ signIn(email,password);
+  }
+
+  useEffect(()=>{
+    if(user){
+      navigate(from,{replace:true})
+    }
+  },[user,navigate,from])
+
     return (
         <div className="bg-[#7ABAB4]">
             <div className="hero  min-h-screen">
@@ -17,18 +36,18 @@ const Login = () => {
       </p>
     </div>
     <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-      <form className="card-body">
+      <form onSubmit={handleSubmit} className="card-body">
         <div className="form-control">
           <label className="label">
             <span className="label-text">Email</span>
           </label>
-          <input type="email" placeholder="email" className="input input-bordered" required />
+          <input type="email" name="email" placeholder="email" className="input input-bordered" required />
         </div>
         <div className="form-control">
           <label className="label">
             <span className="label-text">Password</span>
           </label>
-          <input type="password" placeholder="password" className="input input-bordered" required />
+          <input type="password" name="password" placeholder="password" className="input input-bordered" required />
         </div>
         <div className="form-control mt-6">
           <button className="btn bg-[#0C3AA2] text-white">Login</button>
@@ -37,72 +56,8 @@ const Login = () => {
             <a href="#" className="label-text-alt link link-hover text-lg">Forgot password?</a>
           </label>
           <div className="divider divider-start"></div>
-          <div className="form-control">
-             {/* Open the modal using document.getElementById('ID').showModal() method */}
-<button className="btn bg-[#2DA9DC] text-white" onClick={()=>document.getElementById('my_modal_5').showModal()}>Create new account</button>
-<dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-  <div className="modal-box m-0">
-   <div className="flex justify-between">
-    <div> <h3 className="font-bold text-3xl">Sign Up</h3></div>
-    <div><button><IoIosCloseCircleOutline className="text-3xl" /></button></div>
-   </div>
-    <p>It's quick and easy</p>
-    <div className="divider divider-start"></div>
-   <form>
-   <div className="flex justify-between items-center">
-        <div>
-            <input
-              type="text"
-              placeholder="First name"
-              className="input input-bordered bg-slate-100 input-md w-full max-w-xs max-h-10" />
-        </div>
-        <div>
-            <input
-              type="text"
-              placeholder="Surname"
-              className="input input-bordered max-h-10 bg-slate-100 input-md w-full max-w-xs" />
-        </div>
-    </div>
-    <label className="form-control w-full">
-  <div className="label">
-    <span className="label-text">Date of birth</span>
-  </div>
-  <div className="relative w-1/2">
-  <DatePicker type="text" placeholder="Type here" className="input input-bordered max-h-10 bg-slate-100 w-full" dateFormat={"dd/mm/yyyy"} selected={selectedDate} onChange={date=>setSelectedDate(date)}/>
-  <FaCalendarAlt className="absolute top-2 right-12 text-xl text-[#2DA9DC]" />
-  </div>
-  </label>
-  <label className="form-control w-full">
-  <div className="label">
-  <p className="label-text">Gender</p>
-    <div className="flex justify-evenly">
-        <div className="items-center"><span>Male</span><input type="radio" name="radio-2" className="radio radio-primary pt-2" /></div>
-        <div><span>Female</span><input type="radio" name="radio-2" className="radio radio-primary" /></div>
-        <div><span>Custom</span><input type="radio" name="radio-2" className="radio radio-primary" /></div>
-    </div>
-    </div>
-    </label>
-  <div className="mt-4">
-            <input
-              type="email"
-              placeholder="email address"
-              className="input input-bordered bg-slate-100 input-md w-full max-w-xs max-h-10 mb-4" />
-        </div>
-        <div>
-            <input
-              type="password"
-              placeholder="new password"
-              className="input input-bordered bg-slate-100 input-md w-full max-w-xs max-h-10" />
-        </div>
-   </form>
-    <div className="modal-action">
-      <form method="dialog">
-        {/* if there is a button in form, it will close the modal */}
-        <button className="btn bg-[#0C3AA2] text-white">Sign Up</button>
-      </form>
-    </div>
-  </div>
-</dialog>
+          <div className="form-control">       
+<SignUp/>
         </div>
       </form>
     </div>
