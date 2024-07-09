@@ -2,21 +2,22 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import 'react-datepicker/dist/react-datepicker.css'
 import SignUp from "../components/SignUp";
 import useAuth from "../hooks/UseAuth";
-import { useEffect } from "react";
+import { useEffect} from "react";
 const Login = () => {
-  const {signIn, user} = useAuth();
+  const {signIn,createUser, user} = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  // const [signUpModal,setSignUpModal]= useState();
   console.log(user?.email)
 const from = location?.state?.from?.pathname || '/home'
-  const handleSubmit= (e)=>{
+  const handleSubmit= async (e)=>{
     e.preventDefault();
 
     const form = e.target;
  const email = form.email.value;
  const password = form.password.value;
  console.log(email, password);
- signIn(email,password);
+  await signIn(email,password);
   }
 
   useEffect(()=>{
@@ -56,10 +57,13 @@ const from = location?.state?.from?.pathname || '/home'
             <a href="#" className="label-text-alt link link-hover text-lg">Forgot password?</a>
           </label>
           <div className="divider divider-start"></div>
-          <div className="form-control">       
-<SignUp/>
-        </div>
       </form>
+      <label htmlFor="signUp-modal" className="btn">open modal</label>
+      {
+         <SignUp 
+        signUp={createUser}
+        user={user}/>
+      }
     </div>
   </div>
 </div>

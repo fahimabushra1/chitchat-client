@@ -1,10 +1,8 @@
-import { IoIosCloseCircleOutline } from "react-icons/io";
-import UseAuth from "../hooks/UseAuth";
+// import UseAuth from "../hooks/UseAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useEffect } from "react";
-const SignUp = () => {
-    const {createUser,user}= UseAuth();
+import { useEffect} from "react";
+const SignUp = ({createUser,user}) => {
     console.log(user)
 
     const navigate = useNavigate();
@@ -26,14 +24,14 @@ const SignUp = () => {
         const rpassword = form.rpassword.value;
         const confirmPassword = form.confirmPassword.value;
         console.log(fname,lname,birthday,male,female,custom,remail,rpassword,confirmPassword)
-
-        
-    if(password != confirmPassword){
+  
+       
+    if(rpassword != confirmPassword){
         toast.error("password don't match")
       }
 
-      if(password==confirmPassword){
-        createUser(email,password)
+      if(rpassword==confirmPassword){
+       await createUser(remail,rpassword)
       }
     }
 
@@ -46,17 +44,18 @@ const SignUp = () => {
 
     return (
     <>
-         {/* Open the modal using document.getElementById('ID').showModal() method */}
-         <button className="btn bg-[#2DA9DC] text-white" onClick={()=>document.getElementById('my_modal_5').showModal()}>Create new account</button>
-          <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-         <div className="modal-box m-0">
-         <div className="flex justify-between">
-         <div> <h3 className="font-bold text-3xl">Sign Up</h3></div>
-         <div><button><IoIosCloseCircleOutline className="text-3xl" /></button></div>
-     </div>
-     <p>It's quick and easy</p>
+         {/* The button to open modal */}
+
+
+{/* Put this part before </body> tag */}
+<input type="checkbox" id="signUp-modal" className="modal-toggle" />
+<div className="modal" role="dialog">
+  <div className="modal-box">
+  <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+  <h3 className="font-bold text-3xl">Sign Up</h3>
+  <p>It's quick and easy</p>
       <div className="divider divider-start"></div>
-      <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <div className="flex justify-between items-center">
        <div className="form-control">
      <label className="label">
@@ -112,15 +111,12 @@ const SignUp = () => {
      </label>
      <input type="password" name="confirmPassword" placeholder="confirm password" className="input input-bordered max-h-10 mb-4 bg-slate-100" required />
      </div>
-   </form>
-    <div className="modal-action">
-      <form method="dialog">
-        {/* if there is a button in form, it will close the modal */}
-        <button className="btn bg-[#0C3AA2] text-white">Sign Up</button>
-      </form>
+     <div className="modal-action">
+      <label htmlFor="signUp-modal" className="btn bg-[#0C3AA2] text-white">Sign Up</label>
     </div>
+   </form>
   </div>
-</dialog>  
+</div>  
         </>
     );
 };
