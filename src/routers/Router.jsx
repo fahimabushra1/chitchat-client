@@ -8,31 +8,31 @@ import CreatePage from "../pages/CreatePage";
 
 export const router = createBrowserRouter([
     {
-      path: "/home",
+      path: "/",
       element: <MainLayout/>,
       children:[
         {
-            path: "/home",
+            path: "/",
             element: <Home/>,   
         },
       ]
     },
     {
-      path: "/",
+      path: "",
       element: <LoginLayout/>,
       children: [
         {
-          path: "/",
+          path: "login",
           element: <Login/>,   
       },
       ]
     },
     {
-      path: "/pages",
+      path: "",
       element: <BusinessLayout/>,
       children: [
         {
-          path: "/pages/create",
+          path: "businesspage",
           element: <CreatePage/>,   
       },
       ]
